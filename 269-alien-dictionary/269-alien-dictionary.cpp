@@ -31,7 +31,6 @@ public:
         queue<char> _q;
         for(auto &elem : inDegree) {
             if(elem.second == 0) {
-                // cout<<"\n "<<elem.first<<": "<<elem.second;
                 _q.push(elem.first);
             }       
         }
@@ -39,9 +38,7 @@ public:
         string rc = "";
         while(!_q.empty()) {
             char node = _q.front(); _q.pop();
-            // cout<<"\n NodePopped: "<<node;
             rc += node;
-            // cout<<"\n Rc :" <<rc.size()<<" & adjList.size(): "<<inDegree.size();
             
             for(auto v : adjList[node]) {
                 inDegree[v]--;
@@ -51,6 +48,7 @@ public:
             }
             
         }
+        // Check if the inDegree is not still more than 0
         for(auto &elem : inDegree) {
             if(elem.second>0) return "";
         }
