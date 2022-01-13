@@ -6,7 +6,7 @@ public:
     }
     
     bool enQueue(int value) {
-        if(size == maxSize) return false;
+        if(isFull()) return false;
         
         arr[rear] = value;
         size++; rear = (rear+1)%maxSize;
@@ -14,7 +14,7 @@ public:
     }
     
     bool deQueue() {
-        if(size == 0) return false;
+        if(isEmpty()) return false;
         
         front = (front+1)%maxSize;
         size--;
@@ -22,12 +22,12 @@ public:
     }
     
     int Front() {
-        if(size == 0) return -1;
+        if(isEmpty()) return -1;
         return arr[front];
     }
     
     int Rear() {
-        if(size == 0) return -1;
+        if(isEmpty()) return -1;
         int idx = (rear-1) < 0 ?  maxSize-1 : (rear-1)%maxSize;
         return arr[idx];
     }
