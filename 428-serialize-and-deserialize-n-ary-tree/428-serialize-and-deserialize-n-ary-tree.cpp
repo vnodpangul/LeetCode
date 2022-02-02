@@ -20,49 +20,42 @@ public:
 
 class Codec {
 public:
-    string serializeHelper(Node *root)
+    
+    string sHelper(Node *root) 
     {
-        if(!root) {
-            // cout<<"Hello"<<endl;
-            return "#";
-
-        }
-        string res = "";
-        res += to_string(root->val) + " " + to_string(root->children.size()) + " ";
-        for(auto elem: root->children) {
-            res += serializeHelper(elem);
-        }
-        return res;
+        if(!root) return "#";
         
+        string s="";
+        s += to_string(root->val) + " " + to_string(root->children.size()) + " ";
+        for(auto child: root->children) 
+        {
+            s += sHelper(child);
+        }
+        return s;
     }
     
     // Encodes a tree to a single string.
     string serialize(Node* root) {
-        string res="";
-        res = serializeHelper(root);
-        // cout<<"Res: "<<res<<endl;
-        return res;
+        return sHelper(root);
     }
-	
-    Node* deserializeHelper(istringstream &iss) {
-        string val, count;
-        iss >> val;
+    
+    Node* dHelper(istringstream &iss) {
+        string val, size;
+        iss>>val;
         if(val == "#") return nullptr;
         
         Node *root = new Node(stoi(val));
-        iss>>count;
-        for(int i=0; i<stoi(count); i++) {
-            root->children.emplace_back(deserializeHelper(iss));
-            // root->children
+        iss>>size;
+        for(int i=0; i<stoi(size); i++) {
+            root->children.push_back(dHelper(iss));
         }
-        
         return root;
     }
-    
+	
     // Decodes your encoded data to tree.
     Node* deserialize(string data) {
         istringstream iss(data);
-        return deserializeHelper(iss);
+        return dHelper(iss);
     }
 };
 
