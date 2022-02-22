@@ -125,9 +125,14 @@ private:
 
 
 
-#if 1
+#if 0
 /* 
     Approach 3 : Linear Time & constant space solution
+    
+    Worst case definitely not linear. Should be O(NM)
+    think that s ="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" to match p ="*aaaaaab"( '*' in the beginning)
+    It's easy to see 'match' is moving step by step to almost the end, each time we move 'match', we will go through the whole tail of p (after '*') until we found out 'b' is not a match. Thus it's O(NM)
+
 */
 
 class Solution {
@@ -159,3 +164,63 @@ private:
     
 };
 #endif
+
+#if 1
+/* 
+    Approach 4 : Dynamic Programming
+    Complexity : O(NM)
+*/
+
+class Solution {
+public:
+    
+    void sanitizeP(string &p) {
+        int idx = 0;
+        for(int i=1; i<p.size(); i++) {
+            if(p[i] == '*' && p[i]==p[i-1]) 
+                continue;
+            else {
+                idx++;
+                p[idx] = p[i];
+            }
+        }
+        p = p.substr(0, idx+1);
+    }
+    
+    bool isMatch(string s, string p) {
+        sanitizeP(p);
+        int m = s.size(), n = p.size();
+        vector<vector<bool>> dp(m+1, vector<bool>(n+1, false));
+        
+        dp[0][0] = true;
+        if(p.size()>0 && p[0]=='*') {
+            dp[0][1] = true;
+        }
+        
+        for(int i=1; i<=m; i++) {
+            for(int j=1; j<=n; j++) {
+                if(s[i-1]==p[j-1] || p[j-1]=='?') {
+                    dp[i][j] = dp[i-1][j-1];
+                }else if(p[j-1] == '*') {
+                    dp[i][j] = dp[i-1][j] || dp[i][j-1];
+                }else {
+                    dp[i][j] = false;
+                }
+            }
+        }
+        
+//         for(int i=0; i<=m; i++) {
+//             for(int j=0; j<=n; j++) {
+//                 cout<<dp[i][j]<<" ";
+//             }
+//             cout<<endl;
+//         }
+        return dp[m][n];
+        
+    }
+private:
+    
+};
+#endif
+
+
