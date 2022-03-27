@@ -13,14 +13,20 @@ class Solution {
 public:
     void helper(TreeNode *root, int low, int high, int &sum)
     {
-        if(!root) return;
-        if(root->val < low) return helper(root->right, low, high, sum);
-        if(root->val > high) return helper(root->left, low, high, sum);
+        if(root==nullptr) return;
+        else if(root->val<low)
+            return helper(root->right, low, high, sum);
+        else if(root->val>high) 
+            return helper(root->left, low, high, sum);
+        else{
+            sum += root->val;
+            helper(root->left, low, high, sum);
+            helper(root->right, low, high, sum);
+        }
         
-        sum += root->val;
-        helper(root->left, low, high, sum);
-        helper(root->right, low, high, sum);
+        
     }
+    
     int rangeSumBST(TreeNode* root, int low, int high) {
         int sum = 0;
         helper(root, low, high, sum);
