@@ -11,9 +11,17 @@ public:
     }
     
     int pickIndex() {
-        int idx = (random()%total_sum)+1;
-        auto new_idx_it = lower_bound(wsums.begin(), wsums.end(), idx);
-        return new_idx_it - wsums.begin();
+        int idx = (random()%total_sum);
+        int l = 0, r = wsums.size()-1;
+        while(l<=r) {
+            int mid = l + (r-l)/2;
+            if(idx< wsums[mid]) {
+                r = mid-1;
+            }else {
+                l = mid+1;
+            }
+        }
+        return l;
     }
 private:
     vector<int> wsums;
