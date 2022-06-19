@@ -25,11 +25,34 @@ public:
         
     }
     
+    bool BFS(int src, int dest, int n) {
+        queue<int> q;
+        vector<bool> visited(n, false);
+        
+        q.push(src);
+        // visited[src] = true;
+        
+        while(!q.empty()) {
+                int u = q.front(); q.pop(); 
+                cout<< u <<endl;
+                // if(visited[u]) return false;
+                if(u == dest) return true;
+                visited[u] = true;
+                for(auto v : adjList[u]) {
+                    if(!visited[v])
+                        q.push(v);
+                }
+        }
+        return false;
+        
+    }
+    
     bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
         buildGraph(n, edges);
         
         vector<bool> visited(n, false);
-        return DFS(source, destination, visited);
+        // return DFS(source, destination, visited);
+        return BFS(source, destination, n);
         
         
     }
