@@ -22,11 +22,35 @@ public:
         
     }
     
+    void BFS(int s, int d, vector<bool>&visited, vector<vector<int>>& graph)
+    {
+        queue<vector<int>> q;
+        q.push({s});
+        while(!q.empty()) {
+            auto path = q.front(); q.pop();
+            int node = path[path.size()-1];
+            // cout<<
+            if(node == d) res.push_back(path);
+            // visited[node] = true;
+            for(int u : graph[node]) {
+                // if(!visited[u]) {
+                    path.push_back(u);
+                    q.push(path);
+                    path.pop_back();
+                // }
+            }
+        }
+        
+        
+    }
+    
+    
     vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
         int src = 0, dest = graph.size()-1;
         
         vector<int> tmp; vector<bool> visited(graph.size(), false);
-        DFS(src, dest, tmp, visited, graph);
+        // DFS(src, dest, tmp, visited, graph);
+        BFS(src, dest, visited, graph);
         
         return res;
     }
