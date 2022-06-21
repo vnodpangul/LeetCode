@@ -10,36 +10,22 @@
  * };
  */
 class Solution {
+     vector<vector<int>>  res;
 public:
-
-    int helper(TreeNode *current)
-    {
-        if(!current) return -1;
+    int getHeight(TreeNode *root) {
+        if(root==nullptr) return -1;
+        int level = 1 + max(getHeight(root->left), getHeight(root->right));
+        if(res.size()<level+1) res.push_back({});
         
-        if(current && !current->left && !current->right) {
-            mp[0].push_back(current->val);
-            return 0;
-        }
-        
-        int h = 1 + max(helper(current->left), helper(current->right));
-        mp[h].push_back(current->val);
-        return h;
+        res[level].push_back(root->val);
+        return level;
         
     }
     
     vector<vector<int>> findLeaves(TreeNode* root) {
-        if(root == nullptr)
-            return rc;
+        if(root==nullptr) return res;
+        getHeight(root);
         
-        helper(root);
-        rc.resize(mp.size());
-        for(auto elem : mp) {
-            rc[elem.first] = elem.second;
-        }
-        
-        return rc;
+        return res;
     }
-    private:
-        vector<vector<int>> rc;
-        map<int, vector<int>>  mp;
 };
