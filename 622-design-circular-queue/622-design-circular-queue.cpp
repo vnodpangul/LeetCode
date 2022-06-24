@@ -1,50 +1,52 @@
 class MyCircularQueue {
+    vector<int> q;
+    int size, front, rear, currentSize;
 public:
     MyCircularQueue(int k) {
-        maxSize = k;
-        arr.resize(maxSize, -1);
+        q.resize(k);
+        size = k;
+        front = rear = 0;
+        currentSize = 0;
+        
     }
     
     bool enQueue(int value) {
         if(isFull()) return false;
-        
-        arr[rear] = value;
-        size++; rear = (rear+1)%maxSize;
+        q[rear] = value;
+        rear = (rear+1)%size;
+        currentSize++;
         return true;
     }
     
     bool deQueue() {
         if(isEmpty()) return false;
-        
-        front = (front+1)%maxSize;
-        size--;
+        front = (front+1)%size;
+        currentSize--;
         return true;
     }
     
     int Front() {
         if(isEmpty()) return -1;
-        return arr[front];
+        return q[front];
     }
     
     int Rear() {
         if(isEmpty()) return -1;
-        int idx = (rear-1) < 0 ?  maxSize-1 : (rear-1)%maxSize;
-        return arr[idx];
+        return rear-1 < 0 ? q[size-1] : q[rear-1];
     }
     
     bool isEmpty() {
-        return size==0;
+        return currentSize==0;
     }
     
     bool isFull() {
-        return size==maxSize;
+        return currentSize == size;
     }
-private:
-    int maxSize=0, size=0;
-    vector<int> arr;
-    int front=0, rear=0; 
 };
 
+// size = k = 2
+// front = 0 --> front+1%k -->  
+// rear =  0-->1%2 -->3%2 = 0
 /**
  * Your MyCircularQueue object will be instantiated and called as such:
  * MyCircularQueue* obj = new MyCircularQueue(k);
@@ -55,6 +57,3 @@ private:
  * bool param_5 = obj->isEmpty();
  * bool param_6 = obj->isFull();
  */
-
-// [ 1, 2, 3]   size = 3, maxSize =3
-// i=(0+1+1)%maxSize front rear
