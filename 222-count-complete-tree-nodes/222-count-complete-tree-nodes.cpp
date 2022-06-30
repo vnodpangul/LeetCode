@@ -35,7 +35,8 @@ public:
             // int tmp1 = pow(2,lh) - 1;
             // int tmp2 = (2<<lh)- 1;
             // cout<<lh<<":"<<tmp1<<":"<<tmp2<<endl;
-            return (2<<lh)- 1;
+            // return (2<<lh)- 1;
+            return pow(2,lh+1)-1;
         }else
         {
             return 1 + countNodes(root->left) + countNodes(root->right);
