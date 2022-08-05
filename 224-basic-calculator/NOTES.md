@@ -1,11 +1,31 @@
-"(1+(4+5+2)-3)+(6+8)"
-​
-sign = 1 --> 1-->-1
-​
-num = 4
-res = res+12
-​
-​
-11
-9
-23
+class Solution {
+public:
+int calculate(string s) {
+int i = 0;
+return parseExpr(s, i);
+}
+int parseExpr(string& s, int& i) {
+vector<int> nums;
+char op = '+';
+for (; i < s.length() && op != ')'; i++) {
+if (s[i] == ' ') continue;
+int n = s[i] == '(' ? parseExpr(s, ++i) : parseNum(s, i);
+switch(op) {
+case '+' : nums.push_back(n); break;
+case '-' : nums.push_back(-n); break;
+case '*' : nums.back() *= n; break;
+case '/' : nums.back() /= n; break;
+}
+op = s[i];
+}
+int res = 0;
+for (int n : nums) res += n;
+return res;
+}
+int parseNum(string& s, int& i) {
+int n = 0;
+while(i < s.length() && isdigit(s[i]))
+n = s[i++] - '0' + 10 * n;
+return n;
+}
+};
