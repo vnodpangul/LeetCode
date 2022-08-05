@@ -1,7 +1,7 @@
 class Solution {
     stack<int> st;
-    long num=0;
-    char sign = '+';
+    char sign = '+', ch='+';
+    long res=0, prev=0, num=0;
 public:
     int calculate(string s) {
         
@@ -11,29 +11,25 @@ public:
             while(i<s.size() && s[i]==' ') i++;
             while(isdigit(s[i]))
             {
-                num = num*10 + s[i]-'0';
+                num = num*10 + (s[i]-'0');
                 i++;
             }
             while(i<s.size() && s[i]==' ') i++;
-            char ch = s[i]; i++;
+            ch = s[i]; i++;
 
-            
             switch(sign)
             {
                 case '+':
-                    st.push(num);
-                    break;
-                 case '-':
-                    st.push(-1*num);
+                case '-':
+                    res += prev;
+                    prev = (sign == '+') ? num : -1*num;
                     break;
                  case '*': {
-                    int n = st.top(); st.pop();
-                    st.push(n*num);
+                    prev *= num;
                     break;
                  }
                  case '/': {
-                    int n = st.top(); st.pop();
-                    st.push(n/num);
+                    prev /= num;
                     break;
                  }
                 default:
@@ -45,14 +41,7 @@ public:
             sign = ch;
         }
         
-        if(num>0) {
-            st.push(num);
-        }
-        long res = 0;
-        while(!st.empty())
-        {
-            res += st.top(); st.pop();
-        }
+        res += prev;
         return (int)res;
         
     }
