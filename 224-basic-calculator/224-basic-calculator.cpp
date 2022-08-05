@@ -1,51 +1,44 @@
 class Solution {
-    stack<int> st;
-    int res = 0, num = 0;
-    int sign = 1;
-public:
-
-    int calculate(string s) {
-        
-        for(int i=0; i<s.size(); i++)
+    
+    int parseNum(string &str, int &i)
+    {
+        int n=0;
+        while(i<str.size() && isdigit(str[i]))
         {
-            if(isdigit(s[i]))
-            {
-                num = (num *10) + (s[i]-'0'); 
-            }
-            else if(s[i]=='+')
-            {
-                res += num*sign;
-                sign = 1;
-                num = 0;
-            }
-            else if(s[i]=='-')
-            {
-                res += num*sign;
-                sign = -1;
-                num = 0;
-            }
-            else if(s[i]=='(')
-            {
-                st.push(res);
-                st.push(sign);
-                
-                num=0; res=0; sign = 1;
-            }
-            else if(s[i]==')')
-            {
-                res += (num*sign);
-                
-                res *= st.top(); st.pop(); //sign
-                res += st.top(); st.pop(); // prev res
-                
-                num=0; sign = 1;
-                // cout<<"res : "<<res<<endl;
-            }
+            n = (n*10) + (str[i]-'0');
+            i++;
         }
-        
-        if(num>0)
-            res += (num*sign);
-        
-        return res;
+        return n;
     }
+    
+public:
+    int calculate(string s) {
+        int idx=0;
+        return parseExp(s, idx);
+    }
+    
+    int parseExp(string &s, int &i)
+    {
+        vector<int> nums;
+        char op = '+';
+        for( ; i<s.size() && op !=')'; i++)
+        {
+            if(s[i]==' ') continue;
+            int num = (s[i]=='(') ? parseExp(s, ++i) : parseNum(s, i);
+            switch(op)
+            {
+                case '+':
+                    nums.push_back(num); break;
+                case '-':
+                    nums.push_back(-1*num); break;     
+            }
+            if(i<s.size()) op = s[i];
+        }
+        int res = 0;
+        for(auto n : nums) res += n;
+        return res;
+        
+    }
+    
+
 };
